@@ -1,12 +1,13 @@
 
 class PaginaInicial {
 
-    constructor(page) {
+    constructor(page, url) {
         this.page = page;
+        this.url = url;
     }
 
     async goto() {
-        await this.page.goto('https://www.mercadolivre.com.br/');
+        await this.page.goto(this.url);
     }
 
 }

@@ -34,8 +34,8 @@ module.exports = defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: 'Desktop Chrome',
+      use: { browserName: 'chromium', headless: false },
     },
 
     {
@@ -46,6 +46,15 @@ module.exports = defineConfig({
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
+    },
+
+    {
+      name: 'Tablet iPad',
+      use: {
+          browserName: 'webkit',
+          ...devices['iPad Pro 11'],
+          headless: false,
+      },
     },
 
     /* Test against mobile viewports. */

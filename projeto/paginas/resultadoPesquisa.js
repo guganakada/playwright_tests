@@ -1,43 +1,42 @@
 
 class ResultadoPesquisa {
 
-    constructor(page, expect) {
+    constructor(page, expect, selectors) {
         this.page = page;
-        this.searchBox = '#cb1-edit';
-        this.searchButton = 'button[type="submit"]';
         this.expect = expect;
-        this.searchResultsSelector = '.ui-search-breadcrumb__title';
-        this.productSelector = 'a[title="Fone De Ouvido Bluetooth Sem Fio Tws Microfone Todos Celular"]';
-        this.productTitleSelector = '.ui-pdp-title';
-        this.addToCartButtonSelector = 'button.andes-button.ui-pdp-action--secondary';
+        this.selectors = selectors;
     }
 
     async searchFor(product) {
-        await this.page.fill(this.searchBox, product);
-        await this.page.click(this.searchButton);
+        await this.page.fill(this.selectors.SEARCH_BOX, product);
+        await this.page.click(this.selectors.SEARCH_BUTTON);
+        await this.page.waitForSelector(this.selectors.SEARCH_RESULTS);
     }
 
     async verifySearchResults(expectedText) {
-        const spanText = await this.page.textContent(this.searchResultsSelector);
-        this.expect(spanText).toContain(expectedText);
+        const searchResults = this.page.locator(this.selectors.SEARCH_RESULTS);
+        await this.expect(searchResults).toHaveText(expectedText);
     }
 
     async selectProduct() {
-        await this.page.click(this.productSelector);
+        const productLink = await this.page.waitForSelector(`a[title="${this.selectors.PRODUCT_TITLE}"]`);
+        await productLink.click();
+        await this.page.waitForSelector(this.selectors.PRODUCT_TITLE_SELECTOR);
     }
 
     async verifyProductTitle(expectedTitle) {
-        const productTitle = await this.page.textContent(this.productTitleSelector);
-        this.expect(productTitle).toContain(expectedTitle);
+        await this.page.waitForSelector(this.selectors.PRODUCT_TITLE_SELECTOR);
+        const productTitle = await this.page.textContent(this.selectors.PRODUCT_TITLE_SELECTOR);
+        await this.expect(productTitle).toContain(expectedTitle);
     }
 
     async verifyCurrentPage(expectedUrl) {
         const currentUrl = this.page.url();
-        this.expect(currentUrl).toBe(expectedUrl);
+        await this.expect(currentUrl).toBe(expectedUrl);
     }
 
     async clickAddToCartButton() {
-        await this.page.click(this.addToCartButtonSelector);
+        await this.page.click(this.selectors.ADD_TO_CART_BUTTON);
     }
 
 }
