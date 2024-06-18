@@ -9,7 +9,8 @@ class ResultadoPesquisa {
 
     async searchFor(product) {
         await this.page.fill(this.selectors.SEARCH_BOX, product);
-        await this.page.click(this.selectors.SEARCH_BUTTON);
+        // await this.page.click(this.selectors.SEARCH_BUTTON);
+        await this.page.tap(this.selectors.SEARCH_BUTTON);
         await this.page.waitForSelector(this.selectors.SEARCH_RESULTS);
     }
 

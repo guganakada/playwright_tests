@@ -57,6 +57,22 @@ module.exports = defineConfig({
       },
     },
 
+    {
+      name: 'Mobile Android',
+      use: {
+          browserName: 'chromium',
+          ...devices['Pixel 5'],  // Emulando o dispositivo Pixel 5
+          headless: false,
+      },
+    },
+    
+    {
+      name: 'Mobile Safari',
+      use: {
+        ...devices['iPhone 13'],
+      },
+    },
+
     /* Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',

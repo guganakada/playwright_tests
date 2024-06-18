@@ -13,11 +13,12 @@ const SELECTORS = {
     PRODUCT_TITLE: 'Fone De Ouvido Bluetooth Sem Fio Tws Microfone Todos Celular',
     PRODUCT_TITLE_SELECTOR: '.ui-pdp-title',
     // ADD_TO_CART_BUTTON: 'button.andes-button.ui-pdp-action--secondary',
+    POPUP_CLOSE_BUTTON: '#download-app-bottom-banner-close', 
 };
 
-const iPad = devices['iPad Pro 11'];
+// const iPad = devices['iPad Pro 11'];
 
-test.use({ ...iPad, headless: false });
+// test.use({ ...iPad, headless: false });
 
 test.describe('Pesquisa produto', () => {
 
@@ -31,6 +32,17 @@ test.describe('Pesquisa produto', () => {
     });
 
     test('Busca de produtos no iPad', async ({ page }) => {
+
+        // Fecha o pop-up se ele aparecer
+        try {
+            const popupCloseButton = await page.$(SELECTORS.POPUP_CLOSE_BUTTON);
+            if (popupCloseButton) {
+                await popupCloseButton.click();
+            }
+        } catch (error) {
+            console.log('Pop-up não apareceu ou já foi fechado.');
+        }
+
         // Pesquisar por "fones de ouvido"
         await resultadoPesquisa.searchFor('fone de ouvido');
 
@@ -45,6 +57,7 @@ test.describe('Pesquisa produto', () => {
 
         // Espera pela presença do botão "Adicionar ao carrinho"
         // await resultadoPesquisa.waitForSelector(SELECTORS.ADD_TO_CART_BUTTON);
+
     });
 
     test.afterEach(async ({ page }) => {
